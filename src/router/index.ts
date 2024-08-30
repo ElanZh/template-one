@@ -78,16 +78,16 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/demotwo",
+    path: "/tools",
     component: Layouts,
-    redirect: "/unocss/indextwo",
+    redirect: "/unocss/tools",
     children: [
       {
-        path: "index",
-        component: () => import("@/views/twoTem/two.vue"),
-        name: "two",
+        path: "time-convert",
+        component: () => import("@/views/tools/time-convert.vue"),
+        name: "time-convert",
         meta: {
-          title: "two",
+          title: "时间转换工具",
           svgIcon: "unocss"
         }
       }
