@@ -62,16 +62,29 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/demoone",
+    path: "/binance",
     component: Layouts,
-    redirect: "/unocss/indexone",
+    redirect: "/unocss/binance",
+    meta: {
+      title: "币安",
+      svgIcon: "unocss"
+    },
     children: [
       {
-        path: "index",
-        component: () => import("@/views/twoTem/one.vue"),
-        name: "one",
+        path: "spot-history-trade",
+        component: () => import("@/views/binance/spot-history-trade.vue"),
+        name: "spot-history-trade",
         meta: {
-          title: "one",
+          title: "现货历史成交",
+          svgIcon: "unocss"
+        }
+      },
+      {
+        path: "future-history-trade",
+        component: () => import("@/views/binance/future-history-trade.vue"),
+        name: "future-history-trade",
+        meta: {
+          title: "合约历史成交",
           svgIcon: "unocss"
         }
       }
