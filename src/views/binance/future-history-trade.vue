@@ -4,12 +4,16 @@ import { ref } from "vue"
 import { HistoryTradeData, HistoryTradeRequest } from "@/api/binance/types/binance"
 import { futureHistoryTradeApi } from "@/api/binance/index"
 import type { FormRules } from "element-plus"
-import moment from "moment";
-const GMT8 = "YYYY-MM-DD HH:mm:ss.SSS"
+import moment from "moment"
 
 const loading = ref<boolean>(false)
 
-const searchData = ref<HistoryTradeRequest>({} as HistoryTradeRequest)
+const searchData = ref<HistoryTradeRequest>({
+  symbol: "",
+  tradeId: "",
+  forward: 50,
+  behind: 50
+})
 
 const tableData = ref<HistoryTradeData[]>([])
 
@@ -18,6 +22,13 @@ const formRules: FormRules<HistoryTradeRequest> = {
   tradeId: [{ required: true, trigger: "blur", message: "请输入 tradeId" }],
   forward: [{ required: true, trigger: "blur", message: "请输入 向前查询数量" }],
   behind: [{ required: true, trigger: "blur", message: "请输入 向后查询数量" }]
+}
+
+const forwardPlus = () => {
+  searchData.value.forward += 50
+}
+const behindPlus = () => {
+  searchData.value.behind += 50
 }
 
 const handleSearch = () => {
@@ -45,10 +56,18 @@ const handleSearch = () => {
           <el-input v-model="searchData.tradeId" placeholder="以交易ID为中心" />
         </el-form-item>
         <el-form-item prop="forward" label="向前">
-          <el-input v-model="searchData.forward" :value="50" />
+          <el-input v-model="searchData.forward" placeholder="50">
+            <template #append>
+              <el-button @click="forwardPlus">+50</el-button>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item prop="behind" label="向后">
-          <el-input v-model="searchData.behind" :value="50" />
+          <el-input v-model="searchData.behind" placeholder="50">
+            <template #append>
+              <el-button @click="behindPlus">+50</el-button>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
@@ -65,6 +84,7 @@ const handleSearch = () => {
             </template>
           </el-table-column>
           <el-table-column prop="id" label="tradeId" align="center" />
+          <el-table-column prop="price" label="单价" align="right" />
           <el-table-column prop="qty" label="数量" align="right" />
           <el-table-column prop="quoteQty" label="报价数量" align="right" />
           <el-table-column prop="isBuyerMaker" label="isBuyerMaker" align="center" />
@@ -77,6 +97,7 @@ const handleSearch = () => {
 <style scoped lang="scss">
 .search-wrapper {
   margin-bottom: 20px;
+
   :deep(.el-card__body) {
     padding-bottom: 2px;
   }
